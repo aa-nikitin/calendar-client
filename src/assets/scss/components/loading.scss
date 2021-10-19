@@ -1,0 +1,31 @@
+.loading {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  &__icon {
+    content: '';
+    display: block;
+    color: $main-color;
+    animation-name: rotation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    max-width: 40px;
+    max-height: 40px;
+  }
+  &__wrap {
+    width: 100px;
+    height: 100px;
+    background-color: $white-color;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

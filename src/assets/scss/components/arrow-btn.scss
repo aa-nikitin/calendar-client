@@ -1,0 +1,76 @@
+.arrow-btn {
+  cursor: pointer;
+  border: solid 1px $border-color;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 7px 15px;
+  font-size: 18px;
+  position: relative;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1px;
+  margin-right: 1px;
+  transition-property: all;
+  transition-duration: 0.5s;
+  &:before,
+  &:after {
+    content: '';
+    left: 13px;
+    position: absolute;
+    width: 15px;
+    height: 2px;
+    background-color: $border-color;
+    display: inline-block;
+    transition: all 0.2s ease;
+    transition-property: all;
+    transition-duration: 0.5s;
+  }
+  &:before {
+    top: 13px;
+  }
+  &:after {
+    bottom: 13px;
+  }
+
+  &:hover {
+    border: solid 1px $main-color;
+    &:before,
+    &:after {
+      background-color: $main-color;
+    }
+  }
+  &--left {
+    &:before {
+      transform: rotate(-45deg);
+    }
+
+    &:after {
+      transform: rotate(45deg);
+    }
+  }
+  &--right {
+    &:before {
+      transform: rotate(45deg);
+    }
+
+    &:after {
+      transform: rotate(-45deg);
+    }
+  }
+  &--no-active {
+    background-color: $booked-color;
+    border-color: $booked-color;
+    &:hover {
+      background-color: $booked-color;
+      border-color: $booked-color;
+      cursor: default;
+      &:before,
+      &:after {
+        background-color: $border-color;
+      }
+    }
+  }
+}

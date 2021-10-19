@@ -1,0 +1,44 @@
+.shedule-top {
+  margin-bottom: 40px;
+  &__header {
+  }
+  &__wrap {
+    display: flex;
+    align-items: center;
+  }
+  &__today {
+    cursor: pointer;
+    border: solid 1px $border-color;
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 7px 15px;
+    margin-right: 10px;
+    font-size: 18px;
+    height: 40px;
+    color: $submain-color;
+    transition-property: all;
+    transition-duration: 0.5s;
+    &:hover {
+      border-color: $main-color;
+      color: $main-color;
+    }
+  }
+  &__nav {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__date {
+    color: $main-color;
+    font-size: 22px;
+  }
+  @media screen and (max-device-width: $control-points) {
+    &__wrap {
+      flex-wrap: wrap;
+    }
+    &__date {
+      margin-top: 20px;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.time-scale {
+  &__item {
+    height: 40px;
+  }
+  &__wrap {
+    transform: translateY(-50%);
+    display: flex;
+    align-items: flex-start;
+  }
+  &__hours {
+    font-size: 14px;
+    margin-right: 3px;
+  }
+  &__minutes {
+    font-size: 11px;
+  }
+}
