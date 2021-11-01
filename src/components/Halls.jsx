@@ -8,12 +8,12 @@ import { site } from '../config';
 
 const Halls = ({ children }) => {
   const dispatch = useDispatch();
-  const { loading, hallsStep, hallsPlace } = useSelector((state) => getHalls(state));
+  const { loading, hallsStep, hallsPlace, purposes } = useSelector((state) => getHalls(state));
   const { list, firstActiveBtn, lastActiveBtn, showBtns } = useSelector((state) =>
     getHallsRange(state)
   );
   const {
-    query: { idHall }
+    query: { idHall, purpose }
   } = useSelector((state) => getParams(state));
   // console.log(showBtns);
   const changeHall = (idHall) => () => {
@@ -23,13 +23,33 @@ const Halls = ({ children }) => {
       })
     );
   };
-  const handleBtnArroeClick = (stepHall) => () => {
-    // console.log(lastActiveBtn);
-    if (!(stepHall < 0 && firstActiveBtn) && !(stepHall > 0 && lastActiveBtn))
-      dispatch(hallsChangePlace(hallsPlace + stepHall));
+  const changePurpose = (purpose) => () => {
+    dispatch(
+      sheduleGetRequest({
+        purpose
+      })
+    );
   };
+  const handleBtnArroeClick = (stepHall) => () => {
+    if (!(stepHall < 0 && firstActiveBtn) && !(stepHall > 0 && lastActiveBtn)) {
+      dispatch(hallsChangePlace(hallsPlace + stepHall));
+    }
+  };
+  // console.log(purpose);
   return (
     <>
+      <div className="purposes">
+        {Object.values(purposes).map((item) => {
+          return (
+            <div
+              key={item.value}
+              onClick={changePurpose(item.value)}
+              className={`purposes__item ${purpose === item.value ? 'purposes--active' : ''}`}>
+              {item.name}
+            </div>
+          );
+        })}
+      </div>
       <div className="halls">
         <h3 className="halls__header">{children}</h3>
         <div className="halls__list">

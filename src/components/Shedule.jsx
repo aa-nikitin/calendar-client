@@ -2,26 +2,36 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Loading, TimeScale } from '../components';
-import { getParams, getShedule, getBookingInfo } from '../redux/reducers';
-import { addBooking, deleteBooking, sheduleChangeDayweek } from '../redux/actions';
+import { getParams, getShedule, getBookingInfo, getBooking } from '../redux/reducers';
+import {
+  addBooking,
+  deleteBooking,
+  sheduleChangeDayweek,
+  sheduleChangeQuery,
+  loadPriceRequest
+} from '../redux/actions';
 
 const Shedule = ({ today }) => {
   const dispatch = useDispatch();
   const { query, loading, shedule, dayweek, sizeWindow, controlPoints } = useSelector((state) =>
     getParams(state)
   );
+  const { loading: loadingBooking } = useSelector((state) => getBooking(state));
   const sheduleWork = useSelector((state) => getShedule(state));
-
   // const { selected } = useSelector((state) => getBooking(state));
   const selected = useSelector((state) => getBookingInfo(state));
-  // console.log(selected);
   const sheduleWorkAll = shedule.sheduleWork ? shedule.sheduleWork : {};
   const minutesStep = shedule.minutesStep ? shedule.minutesStep : 0;
   const sheduleKeys = Object.keys(sheduleWork);
   const sheduleKeysAll = Object.keys(sheduleWorkAll);
   // console.log(sheduleWork);
   const handleClickItemShedule = (date, params, idHall) => () => {
-    if (!params.busy) dispatch(addBooking({ ...params, date, minutesStep, idHall }));
+    if (!params.busy) {
+      dispatch(sheduleChangeQuery({ minutesClick: params.minutes, dateClick: date }));
+      dispatch(addBooking({ ...params, date, minutesStep, idHall }));
+      // if (Object.keys(selected).length !== 5)
+      dispatch(loadPriceRequest({ ...params, date, minutesStep, idHall }));
+    }
   };
   const handleRemoveItemShedule = (keyBookedShedule, idHall) => () => {
     if (query.idHall === idHall) dispatch(deleteBooking(keyBookedShedule));
@@ -33,6 +43,7 @@ const Shedule = ({ today }) => {
   const handleDayWeekClick = (date) => () => {
     if (sizeWindow < controlPoints) dispatch(sheduleChangeDayweek(date));
   };
+
   // console.log(!!ref.current && (ref.current.offsetWidth - (10 * 7 * 2 - 20)) / 7);
   return (
     <>
@@ -55,9 +66,10 @@ const Shedule = ({ today }) => {
           <div className="shedule__time-scale"></div>
         </div>
         <div className="shedule__row">
-          <TimeScale timeArr={timeArr} className="shedule__time-scale" />
+          <TimeScale minutesStep={minutesStep} timeArr={timeArr} className="shedule__time-scale" />
 
           {sheduleKeys.map((itemShedule) => {
+            // console.log(minutesStep);
             const itemSheduleKeys = Object.keys(sheduleWork[itemShedule]['list']);
             const rowLen = itemSheduleKeys.length;
             return (
@@ -71,17 +83,28 @@ const Shedule = ({ today }) => {
                     const activeItem = selected ? selectedItem : false;
                     // console.log(selected);
                     const style = !!selectedItem && {
-                      height: selectedItem['heightBusy']
+                      height:
+                        minutesStep === 30
+                          ? selectedItem['heightBusy'] / 2
+                          : selectedItem['heightBusy']
                     };
                     if (rowLen === key + 1) return <div key={itemSheduleList}></div>;
 
                     return (
-                      <div className={`shedule__item`} key={itemSheduleList}>
+                      <div
+                        className={`shedule__item ${
+                          minutesStep === 30 ? 'shedule--item-half' : ''
+                        }  ${
+                          minutesStep === 30 && thisTime.timeM !== '30'
+                            ? 'shedule--item-btn-half'
+                            : ''
+                        }`}
+                        key={itemSheduleList}>
                         {thisTime['busy'] ? (
                           ''
                         ) : (
                           <button
-                            className="shedule__item-btn"
+                            className={`shedule__item-btn`}
                             data-value={`${sheduleWork[itemShedule]['dayWeek']} / ${thisTime.timeH}:${thisTime.timeM}`}
                             onClick={handleClickItemShedule(
                               itemShedule,
@@ -93,6 +116,8 @@ const Shedule = ({ today }) => {
                         {activeItem && (
                           <div
                             className={`shedule__item-active ${
+                              selectedItem.minutesBusy > 30 ? 'shedule--item-column' : ''
+                            } ${
                               selectedItem.idHall !== query.idHall ? 'shedule--item-no-active' : ''
                             }`}
                             style={style}
@@ -100,7 +125,10 @@ const Shedule = ({ today }) => {
                               `${itemShedule}-${thisTime.minutes}`,
                               selectedItem.idHall
                             )}>
-                            {selectedItem.rangeTime}
+                            <div className="shedule__range-time">{selectedItem.rangeTime}</div>
+                            {!!selectedItem.price && (
+                              <div className="shedule__price">{selectedItem.priceText} руб.</div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -110,11 +138,11 @@ const Shedule = ({ today }) => {
               </div>
             );
           })}
-          <TimeScale timeArr={timeArr} className="shedule__time-scale" />
+          <TimeScale minutesStep={minutesStep} timeArr={timeArr} className="shedule__time-scale" />
         </div>
       </div>
 
-      {loading && <Loading />}
+      {loading || (loadingBooking && <Loading />)}
     </>
   );
 };
