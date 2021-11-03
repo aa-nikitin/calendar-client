@@ -1,6 +1,9 @@
 .time-scale {
   &__item {
-    height: 40px;
+    height: $height-shedile;
+  }
+  &--item-half {
+    height: $height-shedile / 2;
   }
   &__wrap {
     transform: translateY(-50%);

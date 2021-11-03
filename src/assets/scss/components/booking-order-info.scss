@@ -1,0 +1,25 @@
+.booking-order-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid $border-color;
+  border-bottom: none;
+  height: 100%;
+  box-shadow: 0 2px 8px rgba($color: $black-color, $alpha: 0.5);
+  padding: 20px 10px;
+  margin-top: 40px;
+  &__item {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
+  }
+  &--count {
+    font-weight: bold;
+  }
+  &--info {
+    color: $gray-text-color;
+  }
+  &__price {
+    font-size: 22px;
+  }
+}

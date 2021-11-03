@@ -7,7 +7,8 @@ import {
   sheduleGetRequest,
   sheduleGetSuccess,
   sheduleGetError,
-  sheduleChangeDayweek
+  sheduleChangeDayweek,
+  sheduleChangeQuery
 } from '../actions';
 
 const sizeWindow = handleActions(
@@ -36,7 +37,15 @@ const query = handleActions(
   {
     [sheduleGetRequest]: (state, { payload }) => ({
       date: payload.date ? payload.date : state.date,
-      idHall: payload.idHall ? payload.idHall : state.idHall
+      idHall: payload.idHall ? payload.idHall : state.idHall,
+      purpose: payload.purpose ? payload.purpose : state.purpose
+    }),
+    [sheduleChangeQuery]: (state, { payload }) => ({
+      date: payload.date ? payload.date : state.date,
+      idHall: payload.idHall ? payload.idHall : state.idHall,
+      purpose: payload.purpose ? payload.purpose : state.purpose
+      // minutesClick: payload.minutesClick ? payload.minutesClick : state.minutesClick,
+      // dateClick: payload.dateClick ? payload.dateClick : state.dateClick
     })
   },
   {}

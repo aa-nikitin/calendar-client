@@ -1,0 +1,53 @@
+.booking-order-form {
+  &__top {
+    display: flex;
+    align-items: center;
+  }
+  &__name {
+    margin-right: 20px;
+    font-size: 22px;
+  }
+  &__header {
+    font-size: 22px;
+    margin-top: 20px;
+  }
+  &__halls {
+  }
+  &__halls-item {
+  }
+  &__halls-name {
+    font-size: 22px;
+    color: $gray-text-color;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid $border-color;
+  }
+  &__booking {
+  }
+  &__booking-item {
+    font-size: 18px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__booking-item-left {
+  }
+  &__booking-item-right {
+    display: flex;
+    align-items: center;
+  }
+  &__booking-right-price {
+  }
+  &__booking-right-persons {
+    margin-left: 20px;
+  }
+  &__total {
+    font-size: 20px;
+    text-align: right;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}

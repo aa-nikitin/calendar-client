@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 
@@ -9,19 +9,22 @@ import {
   sheduleChangeDayweek,
   setWindowSize
 } from './redux/actions';
-import { Shedule, SheduleTop, Halls } from './components';
+import { Shedule, SheduleTop, Halls, BookingInfo, BookingForm } from './components';
 import { formatDate } from './config';
 import useWindowDimensions from './hooks/useWindowDimensions';
 import { getParams } from './redux/reducers';
 
 function App() {
+  const [showBookingForm, setShowBookingForm] = useState(false);
   const dispatch = useDispatch();
   const today = moment().format(formatDate);
   const { controlPoints } = useSelector((state) => getParams(state));
   const { width } = useWindowDimensions();
-  useEffect(() => {
-    // console.log(width);
 
+  const handleClickShowForm = () => setShowBookingForm(!showBookingForm);
+
+  // console.log(countSelected);
+  useEffect(() => {
     dispatch(setWindowSize(width));
     if (width < controlPoints) dispatch(hallsChangeStep(1));
     else dispatch(hallsChangeStep(4));
@@ -36,9 +39,20 @@ function App() {
   }, [dispatch, today, width, controlPoints]);
   return (
     <div className="content-main">
-      <Halls>Выберите зал</Halls>
-      <SheduleTop>Выберите свободное время</SheduleTop>
-      <Shedule today={today} />
+      {!showBookingForm && (
+        <>
+          <Halls>Выберите зал</Halls>
+          <SheduleTop>Выберите свободное время</SheduleTop>
+          <Shedule today={today} />
+          <BookingInfo handleClickShowForm={handleClickShowForm} />
+        </>
+      )}
+      {showBookingForm && (
+        <BookingForm
+          handleClickShowForm={handleClickShowForm}
+          setShowBookingForm={setShowBookingForm}
+        />
+      )}
     </div>
   );
 }

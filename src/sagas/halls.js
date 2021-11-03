@@ -1,13 +1,22 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-import { hallsGetRequest, hallsGetSuccess, hallsGetError } from '../redux/actions';
+import {
+  hallsGetRequest,
+  hallsGetSuccess,
+  hallsGetError,
+  setPurposes,
+  sheduleGetRequest
+} from '../redux/actions';
 import { fetchGet } from '../api';
 import { site } from '../config';
 
 function* hallsGet() {
   try {
     const halls = yield call(fetchGet, `${site}api/halls`);
+    const hallsPurpose = yield call(fetchGet, `${site}api/halls-purpose`);
 
+    yield put(sheduleGetRequest({ purpose: Object.keys(hallsPurpose)[0] }));
+    yield put(setPurposes(hallsPurpose));
     yield put(hallsGetSuccess(halls));
   } catch (error) {
     yield put(hallsGetError(error));

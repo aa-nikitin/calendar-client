@@ -4,7 +4,7 @@ const {
   params: {
     windowSize: setWindowSize,
     shedule: { request: sheduleGetRequest, success: sheduleGetSuccess, error: sheduleGetError },
-    sheduleQuery: { changeDayweek: sheduleChangeDayweek }
+    sheduleQuery: { changeDayweek: sheduleChangeDayweek, changeQuery: sheduleChangeQuery }
   }
 } = createActions({
   PARAMS: {
@@ -15,7 +15,8 @@ const {
       ERROR: null
     },
     SHEDULE_QUERY: {
-      CHANGE_DAYWEEK: null
+      CHANGE_DAYWEEK: null,
+      CHANGE_QUERY: null
     }
   }
 });
@@ -25,5 +26,6 @@ export {
   sheduleGetRequest,
   sheduleGetSuccess,
   sheduleGetError,
-  sheduleChangeDayweek
+  sheduleChangeDayweek,
+  sheduleChangeQuery
 };

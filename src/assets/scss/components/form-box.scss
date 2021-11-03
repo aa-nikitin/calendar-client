@@ -1,0 +1,15 @@
+.form-box {
+  &__row {
+    display: flex;
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+  &__item {
+    width: 33.33%;
+    padding: 5px;
+  }
+  &__item-row {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}

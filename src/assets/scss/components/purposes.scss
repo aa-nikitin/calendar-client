@@ -1,0 +1,16 @@
+.purposes {
+  display: flex;
+  margin-bottom: 30px;
+  &__item {
+    border: solid 1px $border-color;
+    padding: 10px 20px;
+    margin-right: 2px;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  &--active {
+    background-color: rgba($color: $main-color, $alpha: 0.2);
+    border-color: $main-color;
+    color: $main-color;
+  }
+}

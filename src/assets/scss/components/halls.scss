@@ -2,12 +2,12 @@
   margin-bottom: 40px;
   &__list {
     display: flex;
-    margin-left: -10px;
-    margin-right: -10px;
+    margin-left: -2px;
+    margin-right: -2px;
   }
   &__item-wrap {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
   }
   &__item {
     position: relative;
@@ -42,6 +42,7 @@
     text-align: center;
     transition-property: all;
     transition-duration: 0.5s;
+    font-size: 14px;
   }
   &--active {
     border-color: $main-color;
