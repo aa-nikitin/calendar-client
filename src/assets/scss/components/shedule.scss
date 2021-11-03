@@ -94,6 +94,7 @@ $height-shedile: 40px;
     justify-content: center;
     font-size: 12px;
     padding: 5px;
+    overflow: hidden;
   }
   &--item-column {
     flex-direction: column;

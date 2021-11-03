@@ -14,6 +14,15 @@ import {
   sendBookingError
 } from '../actions';
 
+// const params = handleActions(
+//   {
+//     [loadPriceRequest]: (_state, { payload }) => payload,
+//     [loadPriceSuccess]: () => ({}),
+//     [loadPriceError]: () => ({})
+//   },
+//   {}
+// );
+
 const params = handleActions(
   {
     [loadPriceRequest]: (_state, { payload }) => payload,
@@ -68,8 +77,14 @@ const selected = handleActions(
               payload.minutesStep)
         );
       });
-      // console.log(state, payload);
-      let newBooking = { date, minutes, minutesBusy: minutesStep, idHall, persons: 1 };
+      let newBooking = {
+        date,
+        minutes,
+        minutesBusy: minutesStep,
+        idHall,
+        persons: 1,
+        purpose: payload.purpose
+      };
       neighbors.forEach((item) => {
         const minutesBusy = Number(state[item].minutesBusy) + Number(newBooking.minutesBusy);
         const commonBooking =
@@ -79,6 +94,7 @@ const selected = handleActions(
           draft[`minutes`] = commonBooking.minutes;
           draft[`minutesBusy`] = minutesBusy;
           draft[`idHall`] = idHall;
+          draft[`purpose`] = payload.purpose;
         });
       });
       // console.log(neighbors);
@@ -90,24 +106,53 @@ const selected = handleActions(
         draft[`${newBooking.date}-${newBooking.minutes}`] = newBooking;
       });
 
-      if (Object.keys(nextState).length > 5) return state;
+      // if (Object.keys(nextState).length > 5) return state;
       return nextState;
     },
     [deleteBooking]: (state, { payload }) =>
       produce(state, (draft) => {
         delete draft[payload];
       }),
-    [loadPriceSuccess]: (state, { payload }) => {
+    [loadPriceSuccess]: (state, { payload: { value, refresh } }) => {
+      if (!refresh) {
+        const nextState = produce(state, (draft) => {
+          delete draft[`${value.date}-${value.minutes}`];
+        });
+
+        return nextState;
+      }
       // console.log(!!payload.key);
-      const nextState = !!payload.key
+      const nextState = !!value.key
         ? produce(state, (draft) => {
-            draft[payload.key].price = payload.price;
-            draft[payload.key].priceText = payload.priceText;
-            draft[payload.key].timeRange = payload.timeRange;
-            draft[payload.key].timeBusy = payload.timeBusy;
+            draft[value.key].price = value.price;
+            draft[value.key].priceText = value.priceText;
+            draft[value.key].purposeText = value.purposeText;
+            draft[value.key].timeRange = value.timeRange;
+            draft[value.key].timeBusy = value.timeBusy;
           })
         : state;
       // console.log(nextState);
+      return nextState;
+    },
+    [loadPriceRequest]: (state, { payload }) => {
+      // console.log(`${payload.date}-${payload.minutes}`);
+      const selectedKeys = Object.keys(state);
+      // console.log(selectedKeys.length);
+      const keyOrderWithoutPrice = selectedKeys.filter((item) => {
+        const minutesFrom = state[item].minutes;
+        const minutesTo = minutesFrom + state[item].minutesBusy;
+        // console.log(state[item].date, query.dateClick);
+
+        return (
+          payload.minutes >= minutesFrom &&
+          payload.minutes < minutesTo &&
+          state[item].date === payload.date
+        );
+      })[0];
+      const nextState = produce(state, (draft) => {
+        draft[keyOrderWithoutPrice].persons = payload.persons;
+      });
+
       return nextState;
     }
   },
@@ -115,6 +160,14 @@ const selected = handleActions(
 );
 
 export const getBooking = ({ booking }) => booking;
+export const getBookingCount = createSelector(
+  (state) => state.booking.selected,
+  (items) => {
+    const itemsKeys = Object.keys(items);
+
+    return itemsKeys.length;
+  }
+);
 
 const minutesToTime = (minutes, hourSize) => {
   let hoursTime = Math.floor(minutes / hourSize);
@@ -163,4 +216,4 @@ export const getBookingInfoPrice = createSelector(
   }
 );
 
-export default combineReducers({ selected, error, loading, params, form });
+export default combineReducers({ selected, error, loading, form, params });

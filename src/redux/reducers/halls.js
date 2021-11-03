@@ -78,7 +78,6 @@ export const getHallsObj = createSelector(
   (state) => state.halls.list,
   (state) => state.booking.selected,
   (halls, booking) => {
-    // console.log(halls, booking);
     const bookingKeys = Object.keys(booking);
     const hallsObj = halls.reduce((newObj, item) => {
       newObj[item._id] = item;
@@ -87,7 +86,7 @@ export const getHallsObj = createSelector(
     const bookingHalls = {};
     bookingKeys.forEach((item) => {
       const idHall = booking[item].idHall;
-      console.log(!!bookingHalls[idHall]);
+      // console.log(!!bookingHalls[idHall]);
       if (!bookingHalls[idHall])
         bookingHalls[idHall] = { ...hallsObj[idHall], list: [{ ...booking[item] }] };
       else {

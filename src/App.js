@@ -23,9 +23,8 @@ function App() {
 
   const handleClickShowForm = () => setShowBookingForm(!showBookingForm);
 
+  // console.log(countSelected);
   useEffect(() => {
-    // console.log(width);
-
     dispatch(setWindowSize(width));
     if (width < controlPoints) dispatch(hallsChangeStep(1));
     else dispatch(hallsChangeStep(4));
@@ -48,7 +47,12 @@ function App() {
           <BookingInfo handleClickShowForm={handleClickShowForm} />
         </>
       )}
-      {showBookingForm && <BookingForm handleClickShowForm={handleClickShowForm} />}
+      {showBookingForm && (
+        <BookingForm
+          handleClickShowForm={handleClickShowForm}
+          setShowBookingForm={setShowBookingForm}
+        />
+      )}
     </div>
   );
 }

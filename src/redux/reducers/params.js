@@ -43,9 +43,9 @@ const query = handleActions(
     [sheduleChangeQuery]: (state, { payload }) => ({
       date: payload.date ? payload.date : state.date,
       idHall: payload.idHall ? payload.idHall : state.idHall,
-      purpose: payload.purpose ? payload.purpose : state.purpose,
-      minutesClick: payload.minutesClick ? payload.minutesClick : state.minutesClick,
-      dateClick: payload.dateClick ? payload.dateClick : state.dateClick
+      purpose: payload.purpose ? payload.purpose : state.purpose
+      // minutesClick: payload.minutesClick ? payload.minutesClick : state.minutesClick,
+      // dateClick: payload.dateClick ? payload.dateClick : state.dateClick
     })
   },
   {}

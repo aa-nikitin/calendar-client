@@ -7,7 +7,6 @@ import {
   addBooking,
   deleteBooking,
   sheduleChangeDayweek,
-  sheduleChangeQuery,
   loadPriceRequest
 } from '../redux/actions';
 
@@ -27,10 +26,23 @@ const Shedule = ({ today }) => {
   // console.log(sheduleWork);
   const handleClickItemShedule = (date, params, idHall) => () => {
     if (!params.busy) {
-      dispatch(sheduleChangeQuery({ minutesClick: params.minutes, dateClick: date }));
-      dispatch(addBooking({ ...params, date, minutesStep, idHall }));
+      // dispatch(sheduleChangeQuery({ minutesClick: params.minutes, dateClick: date }));
+      dispatch(addBooking({ ...params, date, minutesStep, idHall, purpose: query.purpose }));
       // if (Object.keys(selected).length !== 5)
-      dispatch(loadPriceRequest({ ...params, date, minutesStep, idHall }));
+      // console.log(query.purpose);
+      dispatch(
+        loadPriceRequest({
+          ...params,
+          date,
+          minutes: params.minutes,
+          persons: 1,
+          minutesStep,
+          idHall,
+          purpose: query.purpose
+        })
+      );
+      // console.log({ ...params, date, minutesStep, idHall });
+      // console.log({ ...params, date, minutesStep, idHall });
     }
   };
   const handleRemoveItemShedule = (keyBookedShedule, idHall) => () => {
@@ -44,6 +56,7 @@ const Shedule = ({ today }) => {
     if (sizeWindow < controlPoints) dispatch(sheduleChangeDayweek(date));
   };
 
+  // console.log(Object.keys(selected).length);
   // console.log(!!ref.current && (ref.current.offsetWidth - (10 * 7 * 2 - 20)) / 7);
   return (
     <>
@@ -115,9 +128,7 @@ const Shedule = ({ today }) => {
 
                         {activeItem && (
                           <div
-                            className={`shedule__item-active ${
-                              selectedItem.minutesBusy > 30 ? 'shedule--item-column' : ''
-                            } ${
+                            className={`shedule__item-active shedule--item-column ${
                               selectedItem.idHall !== query.idHall ? 'shedule--item-no-active' : ''
                             }`}
                             style={style}
