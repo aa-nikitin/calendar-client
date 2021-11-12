@@ -85,6 +85,7 @@ const selected = handleActions(
         persons: 1,
         purpose: payload.purpose
       };
+      // console.log(minutes);
       neighbors.forEach((item) => {
         const minutesBusy = Number(state[item].minutesBusy) + Number(newBooking.minutesBusy);
         const commonBooking =

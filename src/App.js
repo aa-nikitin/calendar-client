@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 
 import {
-  sheduleGetRequest,
   hallsGetRequest,
   hallsChangeStep,
   sheduleChangeDayweek,
@@ -29,12 +28,12 @@ function App() {
     if (width < controlPoints) dispatch(hallsChangeStep(1));
     else dispatch(hallsChangeStep(4));
     dispatch(sheduleChangeDayweek(today));
-    dispatch(
-      sheduleGetRequest({
-        date: today,
-        idHall: document.getElementById('root').getAttribute('data-num-room')
-      })
-    );
+    // dispatch(
+    //   sheduleGetRequest({
+    //     date: today,
+    //     idHall: document.getElementById('root').getAttribute('data-num-room')
+    //   })
+    // );
     dispatch(hallsGetRequest());
   }, [dispatch, today, width, controlPoints]);
   return (
