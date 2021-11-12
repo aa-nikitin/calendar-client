@@ -50,4 +50,11 @@
     margin-top: 30px;
     margin-bottom: 30px;
   }
+  &__delete {
+    cursor: pointer;
+    color: $submain-color;
+    &:hover {
+      color: $main-color;
+    }
+  }
 }

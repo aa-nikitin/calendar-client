@@ -5,9 +5,10 @@ import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import InputMask from 'react-input-mask';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import CloseIcon from '@mui/icons-material/Close';
+// import Radio from '@mui/material/Radio';
+// import RadioGroup from '@mui/material/RadioGroup';
+// import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { getHallsObj, getBookingInfoPrice, getBooking, getBookingCount } from '../redux/reducers';
 import { sendBookingRequest, loadPriceRequest, deleteBooking } from '../redux/actions';
@@ -23,8 +24,8 @@ const validationSchema = yup.object({
     .string('Введите E-mail')
     .email('Введите корректный email')
     .required('Имя обязательно для заполнения'),
-  comment: yup.string('Введите Комментарий'),
-  typePay: yup.string('Тип оплаты')
+  comment: yup.string('Введите Комментарий')
+  // typePay: yup.string('Тип оплаты')
 });
 
 const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
@@ -47,8 +48,8 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
       firstName: '',
       phone: '',
       mail: '',
-      comment: '',
-      typePay: 'online'
+      comment: ''
+      // typePay: 'online'
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -70,7 +71,7 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
   const handleDelete = (item) => () => {
     dispatch(deleteBooking(`${item.date}-${item.minutes}`));
     if (countSelected <= 1) setShowBookingForm(false);
-    console.log(countSelected);
+    // console.log(countSelected);
   };
 
   return (
@@ -111,7 +112,10 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
                               onChange={handleChange(item)}
                             />
                           </div>
-                          <button onClick={handleDelete(item)}>Удалить</button>
+                          <CloseIcon
+                            className="booking-order-form__delete"
+                            onClick={handleDelete(item)}
+                          />
                         </div>
                       </div>
                     );
@@ -175,17 +179,19 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
                 helperText={formik.touched.comment && formik.errors.comment}
               />
             </div>
-            <RadioGroup
+            {/* <RadioGroup
               value={formik.values.typePay}
               name="typePay"
               id="typePay"
               onChange={formik.handleChange}>
               <FormControlLabel value="online" control={<Radio />} label="Безналичный платеж" />
               <FormControlLabel value="offline" control={<Radio />} label="Наличный платеж" />
-            </RadioGroup>
-            <Button variant="outlined" color="primary" type="submit">
-              Отправить заявку
-            </Button>
+            </RadioGroup> */}
+            <div className="form-box__bottom">
+              <Button variant="outlined" color="primary" type="submit">
+                Отправить заявку
+              </Button>
+            </div>
           </form>
         </div>
       </div>

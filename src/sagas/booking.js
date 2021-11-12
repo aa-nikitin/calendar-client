@@ -52,11 +52,16 @@ function* orderSend() {
   try {
     const { form } = yield select(getBooking);
     const { price } = yield select(getBookingInfoPrice);
-    const result = yield call(fetchPost, `${site}api/booking-fetch`, { ...form, price });
-    // console.log(price);
+    const { selected } = yield select(getBooking);
+    const result = yield call(fetchPost, `${site}api/booking-add-orders`, {
+      ...form,
+      price,
+      selected
+    });
+    console.log(result);
     // window.open(result.invoice_url, '_blank');
-    window.location.href = result.invoice_url;
-    yield put(sendBookingSuccess({}));
+    // window.location.href = result.invoice_url;
+    yield put(sendBookingSuccess(result));
   } catch (error) {
     yield put(sendBookingError(error));
   }
