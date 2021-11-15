@@ -125,7 +125,12 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
             );
           })}
         </div>
-        <div className="booking-order-form__total">Итого: {bookingPriceInfo.priceFormat} руб.</div>
+        <div className="booking-order-form__total">
+          Итого: {bookingPriceInfo.priceFormat} руб.
+          <div className="booking-order-form__total-discount">
+            Включая скидку {bookingPriceInfo.discountFormat} руб.
+          </div>
+        </div>
         <div className="booking-order-form__fields">
           <form className="form-box" onSubmit={formik.handleSubmit}>
             <div className="form-box__row">
