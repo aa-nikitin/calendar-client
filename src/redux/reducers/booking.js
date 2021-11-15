@@ -14,15 +14,6 @@ import {
   sendBookingError
 } from '../actions';
 
-// const params = handleActions(
-//   {
-//     [loadPriceRequest]: (_state, { payload }) => payload,
-//     [loadPriceSuccess]: () => ({}),
-//     [loadPriceError]: () => ({})
-//   },
-//   {}
-// );
-
 const params = handleActions(
   {
     [loadPriceRequest]: (_state, { payload }) => payload,
@@ -127,6 +118,8 @@ const selected = handleActions(
         ? produce(state, (draft) => {
             draft[value.key].price = value.price;
             draft[value.key].priceText = value.priceText;
+            draft[value.key].discount = value.discount;
+            draft[value.key].discountText = value.discountText;
             draft[value.key].purposeText = value.purposeText;
             draft[value.key].timeRange = value.timeRange;
             draft[value.key].timeBusy = value.timeBusy;
@@ -203,16 +196,18 @@ export const getBookingInfoPrice = createSelector(
   (booking) => {
     const bookingKeys = Object.keys(booking);
     let sumPrice = 0;
+    let sumDiscount = 0;
     bookingKeys.forEach((item) => {
       sumPrice += !!booking[item].price ? booking[item].price : 0;
-      // console.log(booking[item].price);
+      sumDiscount += !!booking[item].discount ? booking[item].discount : 0;
     });
-    // console.log(sumPrice, bookingKeys.length);
 
     return {
       price: sumPrice,
+      discount: sumDiscount,
       bookingCount: bookingKeys.length,
-      priceFormat: sumPrice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
+      priceFormat: sumPrice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 '),
+      discountFormat: sumDiscount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
     };
   }
 );

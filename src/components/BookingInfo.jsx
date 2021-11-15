@@ -9,7 +9,7 @@ const BookingInfo = ({ handleClickShowForm }) => {
   const bookingPriceInfo = useSelector((state) => getBookingInfoPrice(state));
   //   const selected = useSelector((state) => getBookingInfo(state));
   //   const hallsObj = useSelector((state) => getHallsObj(state));
-
+  // console.log(bookingPriceInfo.discountFormat);
   return (
     bookingPriceInfo.bookingCount > 0 && (
       <div className="booking-order-info">
@@ -21,6 +21,9 @@ const BookingInfo = ({ handleClickShowForm }) => {
         </div>
         <div className="booking-order-info__item">
           <div className="booking-order-info__price">{bookingPriceInfo.priceFormat} руб.</div>
+          <div className="booking-order-info__price-discount">
+            Включая скидку {bookingPriceInfo.discountFormat} руб.
+          </div>
         </div>
         <div className="booking-order-info__item">
           <Button onClick={handleClickShowForm} variant="contained">

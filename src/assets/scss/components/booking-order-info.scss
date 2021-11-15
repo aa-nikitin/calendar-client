@@ -22,4 +22,9 @@
   &__price {
     font-size: 22px;
   }
+  &__price-discount {
+    font-size: 14px;
+    color: $submain-color;
+    margin-top: 5px;
+  }
 }

@@ -50,6 +50,11 @@
     margin-top: 30px;
     margin-bottom: 30px;
   }
+  &__total-discount {
+    font-size: 14px;
+    color: $submain-color;
+    margin-top: 5px;
+  }
   &__delete {
     cursor: pointer;
     color: $submain-color;
