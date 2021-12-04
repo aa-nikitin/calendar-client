@@ -6,11 +6,18 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import InputMask from 'react-input-mask';
 import CloseIcon from '@mui/icons-material/Close';
-// import Radio from '@mui/material/Radio';
-// import RadioGroup from '@mui/material/RadioGroup';
-// import FormControlLabel from '@mui/material/FormControlLabel';
+import moment from 'moment';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { getHallsObj, getBookingInfoPrice, getBooking, getBookingCount } from '../redux/reducers';
+import {
+  getHallsObj,
+  getBookingInfoPrice,
+  getBooking,
+  getBookingCount,
+  getPrepayment
+} from '../redux/reducers';
 import { sendBookingRequest, loadPriceRequest, deleteBooking } from '../redux/actions';
 import { Loading } from '../components';
 
@@ -24,36 +31,39 @@ const validationSchema = yup.object({
     .string('Введите E-mail')
     .email('Введите корректный email')
     .required('Имя обязательно для заполнения'),
-  comment: yup.string('Введите Комментарий')
-  // typePay: yup.string('Тип оплаты')
+  comment: yup.string('Введите Комментарий'),
+  typePay: yup.string('Тип оплаты')
 });
 
 const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
   const dispatch = useDispatch();
-  //   const dispatch = useDispatch();
+  //   const dispatch = useDispatch();getPrepayment
   const bookingPriceInfo = useSelector((state) => getBookingInfoPrice(state));
   const countSelected = useSelector((state) => getBookingCount(state));
   const { loading: loadingBooking } = useSelector((state) => getBooking(state));
+  const prepayment = useSelector((state) => getPrepayment(state));
+  // console.log(prepayment);
   //   const selected = useSelector((state) => getBookingInfo(state));
   const hallsObj = useSelector((state) => getHallsObj(state));
 
   const hallsObjKeys = Object.keys(hallsObj);
 
-  const handleOrder = (values) => {
-    dispatch(sendBookingRequest(values));
-  };
+  // const handleOrder = (values) => {
+  //   dispatch(sendBookingRequest(values));
+  // };
 
   const formik = useFormik({
     initialValues: {
       firstName: '',
       phone: '',
       mail: '',
-      comment: ''
-      // typePay: 'online'
+      comment: '',
+      typePay: 'percent'
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      handleOrder(values);
+      const dateOrder = moment(new Date());
+      dispatch(sendBookingRequest({ ...values, dateOrder }));
       //   console.log(values);
       //   onClick(values);
     }
@@ -73,7 +83,7 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
     if (countSelected <= 1) setShowBookingForm(false);
     // console.log(countSelected);
   };
-
+  // console.log(bookingPriceInfo);
   return (
     <>
       <div className="booking-order-form">
@@ -106,6 +116,8 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
                           </div>
                           <div className="booking-order-form__booking-right-persons">
                             <TextField
+                              type="number"
+                              InputProps={{ inputProps: { min: 1 } }}
                               label="кол-во человек"
                               variant="standard"
                               defaultValue={item.persons}
@@ -184,17 +196,46 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
                 helperText={formik.touched.comment && formik.errors.comment}
               />
             </div>
-            {/* <RadioGroup
-              value={formik.values.typePay}
-              name="typePay"
-              id="typePay"
-              onChange={formik.handleChange}>
-              <FormControlLabel value="online" control={<Radio />} label="Безналичный платеж" />
-              <FormControlLabel value="offline" control={<Radio />} label="Наличный платеж" />
-            </RadioGroup> */}
+
+            <div className="form-box__info">
+              В течении {prepayment.hours} {prepayment.hours > 1 ? 'часов' : 'часа'} Вам необходимо
+              оплатить заказ в размере не менее {prepayment.percent}%. В противном случае Ваш заказ
+              будет отменен.
+            </div>
+            {prepayment.percent < 100 ? (
+              <div className="form-box__item-row">
+                <div className="form-box__head">
+                  В зависимости от вашего выбора будет сформирован счет на оплату и отправлен на
+                  указанную Вами почту.
+                </div>
+                <RadioGroup
+                  value={formik.values.typePay}
+                  name="typePay"
+                  id="typePay"
+                  onChange={formik.handleChange}>
+                  <FormControlLabel
+                    value="percent"
+                    control={<Radio />}
+                    label={`Оплатить предоплату в размере ${prepayment.percent}% - ${Math.ceil(
+                      (bookingPriceInfo.price / 100) * prepayment.percent
+                    )
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} руб.`}
+                  />
+                  <FormControlLabel
+                    value="full"
+                    control={<Radio />}
+                    label={`Оплатить всю стоимость - ${bookingPriceInfo.priceFormat} руб.`}
+                  />
+                </RadioGroup>
+              </div>
+            ) : (
+              ''
+            )}
+
             <div className="form-box__bottom">
               <Button variant="outlined" color="primary" type="submit">
-                Отправить заявку
+                Оплатить
               </Button>
             </div>
           </form>

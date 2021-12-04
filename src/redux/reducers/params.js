@@ -85,6 +85,12 @@ export const getShedule = createSelector(
     else return shedule.sheduleWork ? shedule.sheduleWork : {};
   }
 );
+export const getPrepayment = createSelector(
+  (state) => state.params.shedule,
+  (shedule) => {
+    return { hours: shedule.prepaymentHours, percent: shedule.prepaymentPercent };
+  }
+);
 
 export default combineReducers({
   sizeWindow,

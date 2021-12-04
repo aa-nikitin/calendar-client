@@ -137,9 +137,7 @@ const Shedule = ({ today }) => {
                               selectedItem.idHall
                             )}>
                             <div className="shedule__range-time">{selectedItem.rangeTime}</div>
-                            {!!selectedItem.price && (
-                              <div className="shedule__price">{selectedItem.priceText} руб.</div>
-                            )}
+                            <div className="shedule__price">{selectedItem.priceText} руб.</div>
                           </div>
                         )}
                       </div>

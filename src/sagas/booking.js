@@ -58,8 +58,22 @@ function* orderSend() {
       price,
       selected
     });
-    console.log(result);
-    // window.open(result.invoice_url, '_blank');
+    const sendResult = yield call(fetchPost, `${site}api/booking-fetch`, {
+      listOrders: result,
+      price,
+      form: { ...form }
+    });
+    console.log(sendResult);
+    if (!sendResult.error) {
+      // window.open(sendResult.invoice_url);
+      // window.location.reload();
+      window.location.href = sendResult.invoice_url;
+    } else {
+      alert(
+        'Заказ добавлен но с оплатой что-то пошло не так, свяжитесь с нами для оплаты указав причину'
+      );
+    }
+    // window.open(sendResult.invoice_url, '_blank');
     // window.location.href = result.invoice_url;
     yield put(sendBookingSuccess(result));
   } catch (error) {

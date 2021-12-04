@@ -21,7 +21,7 @@ function* sheduleGet() {
     const newQuery = isUpdate && !!newIdHall ? { ...query, idHall: newIdHall } : query;
 
     const shedule = yield call(fetchPost, `${site}api/booking-plan-week`, newQuery);
-    // console.log(shedule);
+    console.log(shedule);
     yield put(sheduleGetSuccess(shedule));
   } catch (error) {
     yield put(sheduleGetError(error));
