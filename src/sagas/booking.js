@@ -1,4 +1,5 @@
 import { takeLatest, put, call, select } from 'redux-saga/effects';
+import moment from 'moment';
 
 import {
   loadPriceRequest,
@@ -53,17 +54,20 @@ function* orderSend() {
     const { form } = yield select(getBooking);
     const { price } = yield select(getBookingInfoPrice);
     const { selected } = yield select(getBooking);
+    const dateOrderFormat = moment(form.dateOrder).format('DD.MM.YYYY HH:mm');
+
     const result = yield call(fetchPost, `${site}api/booking-add-orders`, {
       ...form,
       price,
-      selected
+      selected,
+      dateOrderFormat
     });
     const sendResult = yield call(fetchPost, `${site}api/booking-fetch`, {
       listOrders: result,
       price,
       form: { ...form }
     });
-    console.log(sendResult);
+    // console.log(sendResult);
     if (!sendResult.error) {
       // window.open(sendResult.invoice_url);
       // window.location.reload();
