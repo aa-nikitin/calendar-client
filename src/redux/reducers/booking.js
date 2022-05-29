@@ -57,7 +57,6 @@ const selected = handleActions(
     [addBooking]: (state, { payload }) => {
       const { date, minutes, minutesStep, idHall } = payload;
       const stateKeys = Object.keys(state);
-      // const neighbors = [];
       const neighbors = stateKeys.filter((item) => {
         return (
           state[item].date === payload.date &&
@@ -76,7 +75,6 @@ const selected = handleActions(
         persons: 1,
         purpose: payload.purpose
       };
-      // console.log(minutes);
       neighbors.forEach((item) => {
         const minutesBusy = Number(state[item].minutesBusy) + Number(newBooking.minutesBusy);
         const commonBooking =
@@ -89,16 +87,13 @@ const selected = handleActions(
           draft[`purpose`] = payload.purpose;
         });
       });
-      // console.log(neighbors);
       const nextState = produce(state, (draft) => {
         neighbors.forEach((item) => {
           delete draft[item];
         });
-        // console.log(idHall, newBooking);
         draft[`${newBooking.date}-${newBooking.minutes}`] = newBooking;
       });
 
-      // if (Object.keys(nextState).length > 5) return state;
       return nextState;
     },
     [deleteBooking]: (state, { payload }) =>
@@ -113,7 +108,6 @@ const selected = handleActions(
 
         return nextState;
       }
-      // console.log(!!payload.key);
       const nextState = !!value.key
         ? produce(state, (draft) => {
             draft[value.key].price = value.price;
@@ -125,17 +119,13 @@ const selected = handleActions(
             draft[value.key].timeBusy = value.timeBusy;
           })
         : state;
-      // console.log(nextState);
       return nextState;
     },
     [loadPriceRequest]: (state, { payload }) => {
-      // console.log(`${payload.date}-${payload.minutes}`);
       const selectedKeys = Object.keys(state);
-      // console.log(selectedKeys.length);
       const keyOrderWithoutPrice = selectedKeys.filter((item) => {
         const minutesFrom = state[item].minutes;
         const minutesTo = minutesFrom + state[item].minutesBusy;
-        // console.log(state[item].date, query.dateClick);
 
         return (
           payload.minutes >= minutesFrom &&
@@ -186,8 +176,12 @@ export const getBookingInfo = createSelector(
 
       return [item, { ...items[item], rangeTime: `${timeFrom}-${timeTo}`, heightBusy }];
     });
+    const resultObjBooking = newObjBooking.reduce(function (target, key, index) {
+      target[key[0]] = key[1];
+      return target;
+    }, {});
 
-    return Object.fromEntries(newObjBooking);
+    return resultObjBooking;
   }
 );
 

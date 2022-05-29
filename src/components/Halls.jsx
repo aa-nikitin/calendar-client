@@ -1,21 +1,20 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Loading, ArrowBtn } from '../components';
+import { Loading /*, ArrowBtn */ } from '../components';
 import { getHalls, getHallsRange, getParams } from '../redux/reducers';
-import { sheduleGetRequest, hallsChangePlace } from '../redux/actions';
+import { sheduleGetRequest /*, hallsChangePlace*/ } from '../redux/actions';
 import { site } from '../config';
 
-const Halls = ({ children }) => {
+const Halls = ({ width, children }) => {
   const dispatch = useDispatch();
-  const { loading, hallsStep, hallsPlace, purposes } = useSelector((state) => getHalls(state));
-  const { list, firstActiveBtn, lastActiveBtn, showBtns } = useSelector((state) =>
+  const { loading, /*hallsStep, hallsPlace, */ purposes } = useSelector((state) => getHalls(state));
+  const { list /*, firstActiveBtn, lastActiveBtn, showBtns*/ } = useSelector((state) =>
     getHallsRange(state)
   );
   const {
     query: { idHall, purpose }
   } = useSelector((state) => getParams(state));
-  // console.log(showBtns);
   const changeHall = (idHall) => () => {
     dispatch(
       sheduleGetRequest({
@@ -30,12 +29,14 @@ const Halls = ({ children }) => {
       })
     );
   };
-  const handleBtnArroeClick = (stepHall) => () => {
-    if (!(stepHall < 0 && firstActiveBtn) && !(stepHall > 0 && lastActiveBtn)) {
-      dispatch(hallsChangePlace(hallsPlace + stepHall));
-    }
-  };
-  // console.log(purpose);
+  const widthList = `${200 * list.length}px`;
+
+  // style={`${width <= 1170 ? { width: widthLsit } : {}}`}
+  // const handleBtnArroeClick = (stepHall) => () => {
+  //   if (!(stepHall < 0 && firstActiveBtn) && !(stepHall > 0 && lastActiveBtn)) {
+  //     dispatch(hallsChangePlace(hallsPlace + stepHall));
+  //   }
+  // };
   return (
     <>
       <div className="purposes">
@@ -52,32 +53,34 @@ const Halls = ({ children }) => {
       </div>
       <div className="halls">
         <h3 className="halls__header">{children}</h3>
-        <div className="halls__list">
-          {list &&
-            list.map((item) => {
-              const { _id, name, cover } = item;
-              // console.log(_id);
-              return (
-                <div className="halls__item-wrap" key={_id}>
-                  <div
-                    className={`halls__item ${idHall === _id ? 'halls--active' : ''}`}
-                    onClick={changeHall(_id)}>
-                    <div className="halls__image">
-                      <img
-                        className="halls__img"
-                        src={`${site}${
-                          cover ? cover.pathResize : './files/common/no-image-340x200.jpg'
-                        }`}
-                        alt=""
-                      />
+        <div className={`halls__wrap-list ${width <= 1170 ? 'halls--wrap-list-mobile' : ''}`}>
+          <div className="halls__list" style={width <= 1170 ? { width: widthList } : {}}>
+            {list &&
+              list.map((item) => {
+                const { _id, name, cover } = item;
+
+                return (
+                  <div className="halls__item-wrap" key={_id}>
+                    <div
+                      className={`halls__item ${idHall === _id ? 'halls--active' : ''}`}
+                      onClick={changeHall(_id)}>
+                      <div className="halls__image">
+                        <img
+                          className="halls__img"
+                          src={`${site}${
+                            cover ? cover.pathResize : './files/common/no-image-340x200.jpg'
+                          }`}
+                          alt=""
+                        />
+                      </div>
+                      <div className="halls__name">{name}</div>
                     </div>
-                    <div className="halls__name">{name}</div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+          </div>
         </div>
-        {showBtns && (
+        {/* {showBtns && (
           <div className="halls__btns-arrow">
             <ArrowBtn
               typeBtn="left"
@@ -90,7 +93,7 @@ const Halls = ({ children }) => {
               onClick={handleBtnArroeClick(hallsStep)}
             />
           </div>
-        )}
+        )} */}
       </div>
       {loading && <Loading />}
     </>

@@ -27,6 +27,9 @@
   }
   &__image {
   }
+  &--wrap-list-mobile {
+    overflow-x: auto;
+  }
   &__img {
     display: block;
     max-width: 100%;
@@ -67,6 +70,23 @@
     }
     &__name {
       font-size: 12px;
+    }
+    &__name {
+      position: static;
+      bottom: 5px;
+      left: 0px;
+      width: 100%;
+      background-color: transparent;
+      color: $black-color;
+      font-size: 12px;
+    }
+    &--active {
+      border-color: $main-color;
+      & .halls {
+        &__name {
+          background-color: transparent;
+        }
+      }
     }
   }
 }

@@ -22,7 +22,6 @@ function App() {
 
   const handleClickShowForm = () => setShowBookingForm(!showBookingForm);
 
-  // console.log(countSelected);
   useEffect(() => {
     dispatch(setWindowSize(width));
     if (width < controlPoints) dispatch(hallsChangeStep(1));
@@ -40,7 +39,7 @@ function App() {
     <div className="content-main">
       {!showBookingForm && (
         <>
-          <Halls>Выберите зал</Halls>
+          <Halls width={width}>Выберите зал</Halls>
           <SheduleTop>Выберите свободное время</SheduleTop>
           <Shedule today={today} />
           <BookingInfo handleClickShowForm={handleClickShowForm} />

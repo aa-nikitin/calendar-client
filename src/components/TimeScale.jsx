@@ -4,7 +4,6 @@ const TimeScale = ({ timeArr, className, minutesStep }) => {
   return (
     <div className={`time-scale ${className}`}>
       {timeArr.map((item) => {
-        // console.log(item.timeM);
         return (
           <div
             className={`time-scale__item ${minutesStep === 30 ? 'time-scale--item-half' : ''}`}

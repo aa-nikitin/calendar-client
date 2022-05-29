@@ -27,4 +27,12 @@
     color: $submain-color;
     margin-top: 5px;
   }
+
+  @media screen and (max-device-width: $control-points) {
+    flex-wrap: wrap;
+    &__item {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  }
 }

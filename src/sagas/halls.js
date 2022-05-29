@@ -16,7 +16,7 @@ function* hallsGet() {
     const today = moment().format(formatDate);
     const halls = yield call(fetchGet, `${site}api/halls`);
     const hallsPurpose = yield call(fetchGet, `${site}api/halls-purpose`);
-    // console.log(Object.keys(hallsPurpose)[0]);
+
     yield put(
       sheduleGetRequest({
         date: today,

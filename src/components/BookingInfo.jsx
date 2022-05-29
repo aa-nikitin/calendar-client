@@ -7,9 +7,7 @@ import { getBookingInfoPrice /*, getBookingInfo, getHallsObj */ } from '../redux
 
 const BookingInfo = ({ handleClickShowForm }) => {
   const bookingPriceInfo = useSelector((state) => getBookingInfoPrice(state));
-  //   const selected = useSelector((state) => getBookingInfo(state));
-  //   const hallsObj = useSelector((state) => getHallsObj(state));
-  // console.log(bookingPriceInfo.discountFormat);
+
   return (
     bookingPriceInfo.bookingCount > 0 && (
       <div className="booking-order-info">

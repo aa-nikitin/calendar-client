@@ -62,4 +62,35 @@
       color: $main-color;
     }
   }
+
+  @media screen and (max-device-width: $control-points) {
+    &__name {
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    &__header {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    &__booking-item {
+      font-size: 14px;
+    }
+    &__total {
+      font-size: 14px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    &__total-discount {
+      font-size: 12px;
+    }
+    &__booking-item {
+      flex-wrap: wrap;
+    }
+    &__booking-item-left {
+      width: 100%;
+    }
+    &__booking-item-right {
+      width: 100%;
+    }
+  }
 }

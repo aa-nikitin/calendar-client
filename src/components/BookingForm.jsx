@@ -37,21 +37,12 @@ const validationSchema = yup.object({
 
 const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
   const dispatch = useDispatch();
-  //   const dispatch = useDispatch();getPrepayment
   const bookingPriceInfo = useSelector((state) => getBookingInfoPrice(state));
   const countSelected = useSelector((state) => getBookingCount(state));
   const { loading: loadingBooking } = useSelector((state) => getBooking(state));
   const prepayment = useSelector((state) => getPrepayment(state));
-  // console.log(prepayment);
-  //   const selected = useSelector((state) => getBookingInfo(state));
   const hallsObj = useSelector((state) => getHallsObj(state));
-
   const hallsObjKeys = Object.keys(hallsObj);
-
-  // const handleOrder = (values) => {
-  //   dispatch(sendBookingRequest(values));
-  // };
-
   const formik = useFormik({
     initialValues: {
       firstName: '',
@@ -63,9 +54,8 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const dateOrder = moment(new Date());
+
       dispatch(sendBookingRequest({ ...values, dateOrder }));
-      //   console.log(values);
-      //   onClick(values);
     }
   });
 
@@ -73,17 +63,16 @@ const BookingForm = ({ handleClickShowForm, setShowBookingForm }) => {
     (params) =>
     ({ target }) => {
       const newParams = { ...params, persons: Number(target.value) };
-      dispatch(loadPriceRequest(newParams));
 
-      // console.log(newParams);
+      dispatch(loadPriceRequest(newParams));
     };
 
   const handleDelete = (item) => () => {
     dispatch(deleteBooking(`${item.date}-${item.minutes}`));
+
     if (countSelected <= 1) setShowBookingForm(false);
-    // console.log(countSelected);
   };
-  // console.log(bookingPriceInfo);
+
   return (
     <>
       <div className="booking-order-form">

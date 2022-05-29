@@ -30,7 +30,6 @@ const SheduleTop = ({ children }) => {
     }
 
     if (!(beforeNowDate && manipulate === 'dec')) {
-      // console.log(today.format(formatDate));
       dispatch(sheduleChangeDayweek(today.format(formatDate)));
       dispatch(
         sheduleGetRequest({

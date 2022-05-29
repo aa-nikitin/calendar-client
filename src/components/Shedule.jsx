@@ -17,19 +17,14 @@ const Shedule = ({ today }) => {
   );
   const { loading: loadingBooking } = useSelector((state) => getBooking(state));
   const sheduleWork = useSelector((state) => getShedule(state));
-  // const { selected } = useSelector((state) => getBooking(state));
   const selected = useSelector((state) => getBookingInfo(state));
   const sheduleWorkAll = shedule.sheduleWork ? shedule.sheduleWork : {};
   const minutesStep = shedule.minutesStep ? shedule.minutesStep : 0;
   const sheduleKeys = Object.keys(sheduleWork);
   const sheduleKeysAll = Object.keys(sheduleWorkAll);
-  // console.log(sheduleWork);
   const handleClickItemShedule = (date, params, idHall) => () => {
     if (!params.busy) {
-      // dispatch(sheduleChangeQuery({ minutesClick: params.minutes, dateClick: date }));
       dispatch(addBooking({ ...params, date, minutesStep, idHall, purpose: query.purpose }));
-      // if (Object.keys(selected).length !== 5)
-      // console.log(query.purpose);
       dispatch(
         loadPriceRequest({
           ...params,
@@ -41,8 +36,6 @@ const Shedule = ({ today }) => {
           purpose: query.purpose
         })
       );
-      // console.log({ ...params, date, minutesStep, idHall });
-      // console.log({ ...params, date, minutesStep, idHall });
     }
   };
   const handleRemoveItemShedule = (keyBookedShedule, idHall) => () => {
@@ -56,8 +49,6 @@ const Shedule = ({ today }) => {
     if (sizeWindow < controlPoints) dispatch(sheduleChangeDayweek(date));
   };
 
-  // console.log(Object.keys(selected).length);
-  // console.log(!!ref.current && (ref.current.offsetWidth - (10 * 7 * 2 - 20)) / 7);
   return (
     <>
       <div className="shedule">
@@ -82,19 +73,16 @@ const Shedule = ({ today }) => {
           <TimeScale minutesStep={minutesStep} timeArr={timeArr} className="shedule__time-scale" />
 
           {sheduleKeys.map((itemShedule) => {
-            // console.log(minutesStep);
             const itemSheduleKeys = Object.keys(sheduleWork[itemShedule]['list']);
             const rowLen = itemSheduleKeys.length;
             return (
               <div className="shedule__column" key={itemShedule}>
-                {/* <div className="shedule__head">{sheduleWork[itemShedule]['dayWeek']}</div> */}
                 <div className="shedule__column-body">
                   {itemSheduleKeys.map((itemSheduleList, key) => {
                     const thisTime = sheduleWork[itemShedule]['list'][itemSheduleList];
                     const selectedItem = selected[`${itemShedule}-${thisTime.minutes}`];
 
                     const activeItem = selected ? selectedItem : false;
-                    // console.log(selected);
                     const style = !!selectedItem && {
                       height:
                         minutesStep === 30
